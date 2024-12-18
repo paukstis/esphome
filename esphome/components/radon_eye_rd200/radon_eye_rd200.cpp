@@ -72,8 +72,8 @@ void RadonEyeRD200::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_
       }
       this->write_handle_ = write_chr->handle;
 
-      esp_err_t status = esp_ble_gattc_register_for_notify(gattc_if, this->parent()->get_remote_bda(),
-                                                           this->read_handle_);
+      esp_err_t status =
+          esp_ble_gattc_register_for_notify(gattc_if, this->parent()->get_remote_bda(), this->read_handle_);
       if (status) {
         ESP_LOGW(TAG, "Error registering for sensor notify, status=%d", status);
       }
@@ -87,11 +87,9 @@ void RadonEyeRD200::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_
       }
       ESP_LOGI(TAG, "write descr success");
       ESP_LOGI(TAG, "writing 0x%02x at write_handle=%d", write_command_, this->write_handle_);
-      esp_err_t status = esp_ble_gattc_write_char(gattc_if, this->parent()->get_conn_id(),
-                                                  this->write_handle_,
-                                                  sizeof(write_command_),
-                                                  (uint8_t *) &write_command_,
-                                                  ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
+      esp_err_t status =
+          esp_ble_gattc_write_char(gattc_if, this->parent()->get_conn_id(), this->write_handle_, sizeof(write_command_),
+                                   (uint8_t *) &write_command_, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
       break;
     }
 
@@ -155,8 +153,8 @@ void RadonEyeRD200::read_sensors_(uint8_t *value, uint16_t value_len) {
   ESP_LOGV(TAG, "Radon Long Term based on month");
   radon_long_term_sensor_->publish_state(radon_month);
 
-  //ESP_LOGV(TAG, "Radon Long Term based on day");
-  //radon_long_term_sensor_->publish_state(radon_day);
+  // ESP_LOGV(TAG, "Radon Long Term based on day");
+  // radon_long_term_sensor_->publish_state(radon_day);
 
   ESP_LOGV(TAG, "  Measurements (Bq/m³) now: %0.03f, day: %0.03f, month: %0.03f", radon_now, radon_day, radon_month);
 
@@ -168,7 +166,6 @@ void RadonEyeRD200::read_sensors_(uint8_t *value, uint16_t value_len) {
   // mobile app).
   parent()->set_enabled(false);
 }
-
 
 void RadonEyeRD200::update() {
   if (this->node_state != esp32_ble_tracker::ClientState::ESTABLISHED) {
