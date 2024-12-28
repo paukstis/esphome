@@ -156,8 +156,7 @@ void RadonEyeRD200::read_sensors_(uint8_t *value, uint16_t value_len) {
   if (radon_month > 0) {
     ESP_LOGV(TAG, "Radon Long Term based on month");
     radon_long_term_sensor_->publish_state(radon_month);
-  }
-  else {
+  } else {
     ESP_LOGV(TAG, "Radon Long Term based on day");
     radon_long_term_sensor_->publish_state(radon_day);
   }
