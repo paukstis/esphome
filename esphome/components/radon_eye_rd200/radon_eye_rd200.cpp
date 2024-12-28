@@ -85,8 +85,8 @@ void RadonEyeRD200::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_
         ESP_LOGE(TAG, "write descr failed, error status = %x", param->write.status);
         break;
       }
-      ESP_LOGI(TAG, "write descr success");
-      ESP_LOGI(TAG, "writing 0x%02x at write_handle=%d", write_command_, this->write_handle_);
+      ESP_LOGV(TAG, "write descr success");
+      ESP_LOGV(TAG, "writing 0x%02x at write_handle=%d", write_command_, this->write_handle_);
       esp_err_t status =
           esp_ble_gattc_write_char(gattc_if, this->parent()->get_conn_id(), this->write_handle_, sizeof(write_command_),
                                    (uint8_t *) &write_command_, ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
@@ -98,9 +98,9 @@ void RadonEyeRD200::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_
 
     case ESP_GATTC_NOTIFY_EVT: {
       if (param->notify.is_notify) {
-        ESP_LOGI(TAG, "ESP_GATTC_NOTIFY_EVT, receive notify value, %d bytes", param->notify.value_len);
+        ESP_LOGV(TAG, "ESP_GATTC_NOTIFY_EVT, receive notify value, %d bytes", param->notify.value_len);
       } else {
-        ESP_LOGI(TAG, "ESP_GATTC_NOTIFY_EVT, receive indicate value, %d bytes", param->notify.value_len);
+        ESP_LOGV(TAG, "ESP_GATTC_NOTIFY_EVT, receive indicate value, %d bytes", param->notify.value_len);
       }
       read_sensors_(param->notify.value, param->notify.value_len);
       break;
@@ -128,7 +128,7 @@ void RadonEyeRD200::read_sensors_(uint8_t *value, uint16_t value_len) {
   // 501085EBB9400000000000000000220025000000
   // Example data V2:
   // 4042323230313033525532303338330652443230304e56322e302e3200014a00060a00080000000300010079300000e01108001c00020000003822005c8f423fa4709d3f
-  ESP_LOGI(TAG, "radon sensors raw bytes");
+  ESP_LOGV(TAG, "radon sensors raw bytes");
   ESP_LOG_BUFFER_HEX_LEVEL(TAG, value, value_len, ESP_LOG_VERBOSE);
 
   // Convert from pCi/L to Bq/m³
